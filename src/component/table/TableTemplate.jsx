@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
+import { IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -20,6 +23,32 @@ const columns = [
     width: 160,
     valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
   },
+  // Coluna de Ações
+  {
+    field: 'actions',
+    headerName: 'Ações',
+    width: 150,
+    sortable: false,
+    renderCell: (params) => (
+      <React.Fragment>
+        {/* Botão Edit */}
+        <IconButton
+          color="primary"
+          onClick={() => handleEdit(params.id)}
+        >
+          <EditIcon sx={{ color: 'yellow' }} />
+        </IconButton>
+        
+        {/* Botão Delete */}
+        <IconButton
+          color="secondary"
+          onClick={() => handleDelete(params.id)}
+        >
+          <DeleteIcon sx={{ color: 'red' }} />
+        </IconButton>
+      </React.Fragment>
+    ),
+  },
 ];
 
 const rows = [
@@ -36,13 +65,23 @@ const rows = [
 
 const paginationModel = { page: 0, pageSize: 5 };
 
+const handleEdit = (id) => {
+  console.log('Edit row with ID:', id);
+  // Adicione aqui a lógica de edição, como abrir um formulário de edição
+};
+
+const handleDelete = (id) => {
+  console.log('Delete row with ID:', id);
+  // Adicione aqui a lógica para excluir o item
+};
+
 export default function TableComponent() {
   return (
     <Paper sx={{ height: 400, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
-        initialState={{ pagination: { paginationModel } }}
+        paginationModel={paginationModel}
         pageSizeOptions={[5, 10]}
         checkboxSelection
         sx={{ border: 0 }}
@@ -50,3 +89,4 @@ export default function TableComponent() {
     </Paper>
   );
 }
+  
